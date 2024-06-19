@@ -31,7 +31,9 @@ function App() {
         <div className="create-card-btn">
           <button onClick={handleCreateBoardClick}>Create a New Board</button>
         </div>
+        <div className="kudos-boards">
         <KudosBoard />
+        </div>
       </div>
       <div>{showModal && <Modal onClose={handleCloseModal} />}</div>
     </div>

@@ -8,7 +8,7 @@ body {
   font-family: Arial, sans-serif;
   line-height: 1.6;
   color: #333;
-  background-color: #ababab;
+  background-color: #f4f4f4;
 }
 
 .app-container {
@@ -18,32 +18,42 @@ body {
 
 .header {
   display: flex;
-  flex: 1 auto;
-  align-self: center;
-  background-color: #7f7e7e;
+  justify-content: center;
+  background-color: #2c2c2c;
   color: #ebe4e4;
   padding: 1rem;
   border-bottom: 1px solid #444;
-  z-index: 1000; /* High z-index to keep it above other content */
+  z-index: 1000;
 }
 
 .header h1 {
   font-size: 1.8rem;
-  text-align: center;
   margin: 0;
 }
 
 .content {
-  padding-top: 0px; /* Adjust this value based on the actual height of your header */
+  padding-top: 0px;
 }
 
 .category-buttons {
   align-self: center;
-  margin-top: 20px; /* Adjust this value as needed */
+  margin-top: 20px;
   padding: 10px;
 }
 
 .category-buttons button {
   margin: 5px;
   padding: 8px 16px;
+  background-color: #282c34;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
+
+.category-buttons button:hover {
+  background-color: #777;
+}
+
+

@@ -1,5 +1,6 @@
-.kudos-cards{
+.kudos-cards {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    gap: 20px; /* Gap between cards */
 }

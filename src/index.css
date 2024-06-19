@@ -15,5 +15,12 @@ button {
 
 button:hover {
   background-color: #777;
-  color: white;
+}
+
+button:focus {
+  outline: 2px solid #282c34; /* Added focus state */
+}
+
+button:active {
+  background-color: #555; /* Added active state */
 }

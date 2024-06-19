@@ -1,0 +1,71 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it’s above other content */
+  }
+  
+  .new-board-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+    width: 400px;
+    max-width: 90%; /* Responsive width */
+  }
+  
+  .close-btn {
+    position: absolute;
+    color: black;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  .close-btn:hover{
+    color: red;
+  }
+  
+  .new-board-form h2 {
+    margin-bottom: 20px;
+  }
+  
+  .new-board-form label {
+    display: block;
+    margin: 10px 0 5px;
+  }
+  
+  .new-board-form input,
+  .new-board-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .new-board-form .submit {
+    background-color: #282c34;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    border-radius: 4px;
+  }
+  
+  .new-board-form .submit:hover {
+    background-color: #777;
+  }
+  
