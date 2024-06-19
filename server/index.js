@@ -16,9 +16,7 @@ app.use(express.json());
 app.use("/boards", boards);
 
 
-app.get('/', (req, res) => {
-    res.send("Welcome to my App")
-})
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`)
