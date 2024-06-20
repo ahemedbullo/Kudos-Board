@@ -2,10 +2,14 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./KudosCard.css";
 
-function KudosCard({ board, onViewBoard, onDelete }) {
+function KudosCard({ board, image, onViewBoard, onDelete }) {
   return (
     <div className="kudos-card">
-      <img src={board.image} alt="" className="" />
+      <img
+        src={`https://picsum.photos/200/300?random=${image}`}
+        alt=""
+        className="Kudos-card-img"
+      />
       <div>
         <p>{board.title}</p>
         <p>{board.author}</p>

@@ -63,10 +63,13 @@ app.put('/:id', async(req, res) => {
 app.delete('/:id', async (req, res) => {
     const {id} = req.params;
     try{
+        await prisma.card.deleteMany({
+            where : {boardId: parseInt(id)}
+        })
         await prisma.board.delete({
             where : {boardId: parseInt(id)},
         })
-        res.status(200).end();
+        res.status(200).json("Board Deleted").end();
     } catch(error){
         res.status(500).json({error: "Error deleting board"})
     }

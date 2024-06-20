@@ -18,6 +18,25 @@ function App() {
     setShowModal(false);
   };
 
+  useEffect(() => {
+    const fetchBoards = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/boards", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(),
+        });
+        const data = await response.json();
+        setBoards(data);
+      } catch (error) {
+        console.error("Error fetching boards: ", error);
+      }
+    };
+    fetchBoards();
+  }, []);
+
   const handleCreateBoard = async (boardData) => {
     try {
       const response = await fetch("http://localhost:3000/boards", {
@@ -45,7 +64,10 @@ function App() {
       });
 
       if (!response.ok) {
-        throw new Error("Delete nor responding correctly");
+        console.log(
+          `Error deleting board: ${response.status} ${response.statusText}`
+        );
+        throw new Error("Delete not responding correctly");
       }
 
       setBoards(boards.filter((board) => board.boardId != boardId));
@@ -89,7 +111,7 @@ function App() {
         </div>
         <div>
           {showModal && (
-            <Modal onClose={handleCloseModal} onSumbit={handleCreateBoard} />
+            <Modal onClose={handleCloseModal} onSubmit={handleCreateBoard} />
           )}
         </div>
       </div>

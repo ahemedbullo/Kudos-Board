@@ -1,18 +1,36 @@
 import React, { useState } from "react";
 import "./CardModal.css";
 
-function CardModal({ onClose, onSumbit }) {
+function CardModal({ onClose, onSubmit }) {
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
   const [gif, setGif] = useState("");
   const [author, setAuthor] = useState("");
+  const [gifQuery, setGifQuery] = useState("");
+  const [gifQueryResult, setGifQueryResult] = useState([]);
 
-  const handleSumbit = () => {
+  const fetchGifs = async (query) => {
+    const apiKey = "EC9mGnNebbhExK0iaYV8XQq8a2o0Qudr";
+    const url = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${gifQuery}&limit=10`;
+    try {
+      const response = await fetch(url);
+      const { data } = await response.json();
+      const gifs = data.map((gif) => ({
+        url: gif.images.fixed_height.url,
+        id: gif.id,
+      }));
+      setGifQueryResult(gifs);
+    } catch (error) {
+      console.error("Error fetching GIFs:", error);
+    }
+  };
+
+  const handleSubmit = () => {
     if (!title || !message || !author) {
       alert("All fields required");
       return;
     }
-    onSumbit({ cardTitle: title, message, gif, author });
+    onSubmit({ cardTitle: title, message, gif, author });
   };
 
   const handleModalClick = (event) => {
@@ -46,6 +64,34 @@ function CardModal({ onClose, onSumbit }) {
           required
         />
 
+        <label>Gif:</label>
+        <input
+          className="cardModal"
+          type="text"
+          placeholder="Search Gif"
+          value={gifQuery}
+          onChange={(e) => {
+            setGifQuery(e.target.value);
+            fetchGifs(e.target.value);
+          }}
+          required
+        />
+        <div className="gif-results">
+          {gifQueryResult.map((gif) => (
+            <img
+              key={gif.id}
+              src={gif.url}
+              alt="gif"
+              onClick={() => {
+                setGif(gif.url);
+                setGifQuery(gif.url);
+                setGifQueryResult([]);
+              }}
+              style={{ cursor: "pointer", width: "100px", height: "100px" }}
+            />
+          ))}
+        </div>
+
         <label>Author:</label>
         <input
           className="cardModal"
@@ -55,7 +101,7 @@ function CardModal({ onClose, onSumbit }) {
           onChange={(e) => setAuthor(e.target.value)}
           required
         />
-        <button className="submit" onClick={handleSumbit}>
+        <button className="submit" onClick={handleSubmit}>
           Create Card
         </button>
       </div>

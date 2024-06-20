@@ -16,6 +16,7 @@ function KudosBoard({ boards, onDeleteBoard }) {
           <KudosCard
             key={board.boardId}
             board={board}
+            image={Math.floor(Math.random() * 100)}
             onDelete={onDeleteBoard}
             onViewBoard={() => handleViewBoard(board.boardId)}
           />

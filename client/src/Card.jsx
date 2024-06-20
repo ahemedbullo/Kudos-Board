@@ -30,6 +30,28 @@ function Card() {
     setShowModal(false);
   };
 
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/boards/${boardId}/cards`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(),
+          }
+        );
+        const data = await response.json();
+        setCards(data);
+      } catch (error) {
+        console.error("Error fetching boards: ", error);
+      }
+    };
+    fetchCards();
+  }, []);
+
   const handleCreateCard = async (cardData) => {
     try {
       const response = await fetch(
@@ -61,7 +83,7 @@ function Card() {
       <p>Author: {board.author}</p>
       <button onClick={handleCreateCardClick}>Add New Card</button>
       {showModal && (
-        <CardModal onClose={handleCloseModal} onSumbit={handleCreateCard} />
+        <CardModal onClose={handleCloseModal} onSubmit={handleCreateCard} />
       )}
       {cards.length > 0 && (
         <div>
@@ -69,7 +91,7 @@ function Card() {
             <div key={card.cardId}>
               <h3>{card.cardTitle}</h3>
               <p>{card.message}</p>
-              <img src="" alt="" />
+              <img src={card.gif} alt="Selected GIF" />
               <p>Author: {card.author}</p>
             </div>
           ))}
