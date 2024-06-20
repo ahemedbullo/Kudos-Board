@@ -72,7 +72,76 @@ app.delete('/:id', async (req, res) => {
     }
 })
 
+app.post('/:boardId/cards', async (req, res) => {
+    const {boardId} = req.params;
+    const {cardTitle, message, gif, author } = req.body;
+    try {
+        const newCard = await prisma.card.create({
+            data : {
+                cardTitle, message, gif, author, boardId:parseInt(boardId),
+            },
+        });
+        res.status(201).json(newCard);
+    } catch (error) {
+        res.status(500).json({error : "Error creating Card"})
+    }
+});
+
+app.get('/:boardId/cards', async (req, res) => {
+    const {boardId} = req.params;
+    try{
+        const cards = await prisma.card.findMany({
+            where: {boardId: parseInt(boardId)},
+        });
+    res.status(200).json(cards)
+    }catch (error){
+        res.status(500).json({error : "Error getting cards"})
+    }
+});
+
+app.get('/:boardId/cards/:cardId', async (req, res) => {
+    const {cardId} = req.params;
+
+    try {
+        const card = await prisma.card.findUnique({
+            where: {cardId : parseInt(cardId)},
+        });
+        if (card){
+            res.status(200).json(card)
+        }else{
+            res.status(404).json({error: "Card not found"})
+        }
+        
+    } catch (error) {
+        res.status(500).json({error: "Error getting card by id"})
+    }
+});
+
+app.put('/:boardId/cards/:cardId', async (req, res) => {
+    const {cardId} = req.params;
+    const {cardTitle, message, gif, author } = req.body;
+    try {
+        const updatedCard = await prisma.card.update({
+            where : {cardId: parseInt(cardId)},
+            data : {cardTitle, message, gif, author },
+        });
+        res.status(200).json(updatedCard);
+    } catch (error) {
+        res.status(500).json({error : "Error Updating Card"});
+    }
+});
 
 
+app.delete('/:boardId/cards/:cardId', async (req, res) => {
+    const {cardId} = req.params;
+    try {
+        await prisma.card.delete({
+            where : { cardId: parseInt(cardId)},
+        });
+        res.status(204);
+    } catch (error) {
+        res.status(500).json({error : "Error deleting card"});
+    }
+});
 
 module.exports = app;
