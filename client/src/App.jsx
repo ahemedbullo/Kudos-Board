@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import SearchBar from "./Search.jsx";
 import KudosBoard from "./KudosBoard.jsx";
 import Modal from "./Modal.jsx";
+import Card from "./Card.jsx";
 
 function App() {
   const [showModal, setShowModal] = useState(false);
@@ -53,32 +55,45 @@ function App() {
   };
 
   return (
-    <div className="app-container">
-      <header className="header">
-        <h1>Kudos Board</h1>
-      </header>
-      <div className="content">
-        <SearchBar />
-        <div className="category-buttons">
-          <button>All</button>
-          <button>Recent</button>
-          <button>Celebrations</button>
-          <button>Thank You</button>
-          <button>Inspiration</button>
+    <Router>
+      <div className="app-container">
+        <header className="header">
+          <h1>Kudos Board</h1>
+        </header>
+        <div className="content">
+          <SearchBar />
+          <div className="category-buttons">
+            <button>All</button>
+            <button>Recent</button>
+            <button>Celebrations</button>
+            <button>Thank You</button>
+            <button>Inspiration</button>
+          </div>
+          <div className="create-card-btn">
+            <button onClick={handleCreateBoardClick}>Create a New Board</button>
+          </div>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <div className="kudos-boards">
+                  <KudosBoard
+                    boards={boards}
+                    onDeleteBoard={handleDeleteBoard}
+                  />
+                </div>
+              }
+            />
+            <Route path="/boards/:boardID" element={<Card />} />
+          </Routes>
         </div>
-        <div className="create-card-btn">
-          <button onClick={handleCreateBoardClick}>Create a New Board</button>
-        </div>
-        <div className="kudos-boards">
-          <KudosBoard boards={boards} onDeleteBoard={handleDeleteBoard} />
+        <div>
+          {showModal && (
+            <Modal onClose={handleCloseModal} onSumbit={handleCreateBoard} />
+          )}
         </div>
       </div>
-      <div>
-        {showModal && (
-          <Modal onClose={handleCloseModal} onSumbit={handleCreateBoard} />
-        )}
-      </div>
-    </div>
+    </Router>
   );
 }
 
