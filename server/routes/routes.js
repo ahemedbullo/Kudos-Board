@@ -66,7 +66,7 @@ app.delete('/:id', async (req, res) => {
         await prisma.board.delete({
             where : {boardId: parseInt(id)},
         })
-        res.status(200)
+        res.status(200).end();
     } catch(error){
         res.status(500).json({error: "Error deleting board"})
     }
@@ -138,7 +138,7 @@ app.delete('/:boardId/cards/:cardId', async (req, res) => {
         await prisma.card.delete({
             where : { cardId: parseInt(cardId)},
         });
-        res.status(204);
+        res.status(204).end();
     } catch (error) {
         res.status(500).json({error : "Error deleting card"});
     }

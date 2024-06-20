@@ -1,17 +1,20 @@
 import React from "react";
-import './KudosCard.css';
+import "./KudosCard.css";
 
-function KudosCard() {
+function KudosCard({ board, onDelete }) {
   return (
     <div className="kudos-card">
-      <img src="" alt="there is an image here" className="" />
+      <img src={board.image} alt="" className="" />
       <div>
-        <p>title</p>
-        <p>author</p>
-        <p>category</p>
+        <p>{board.title}</p>
+        <p>{board.author}</p>
+        <p>{board.category}</p>
         <div className="cardButtons">
           <button className="viewBoard"> View Board</button>
-          <button className="deleteBoard" onClick>
+          <button
+            className="deleteBoard"
+            onClick={() => onDelete(board.boardId)}
+          >
             Delete Board
           </button>
         </div>

@@ -6,6 +6,7 @@ import Modal from "./Modal.jsx";
 
 function App() {
   const [showModal, setShowModal] = useState(false);
+  const [boards, setBoards] = useState([]);
 
   const handleCreateBoardClick = () => {
     setShowModal(true);
@@ -14,6 +15,43 @@ function App() {
   const handleCloseModal = () => {
     setShowModal(false);
   };
+
+  const handleCreateBoard = async (boardData) => {
+    try {
+      const response = await fetch("http://localhost:3000/boards", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(boardData),
+      });
+      if (!response.ok) {
+        throw new Error("HandleCreateBoard Error");
+      }
+      const newBoard = await response.json();
+      setBoards([...boards, newBoard]);
+      handleCloseModal();
+    } catch (error) {
+      console.error("Error Creating board: ", error);
+    }
+  };
+
+  const handleDeleteBoard = async (boardId) => {
+    try {
+      const response = await fetch(`http://localhost:3000/boards/${boardId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Delete nor responding correctly");
+      }
+
+      setBoards(boards.filter((board) => board.boardId != boardId));
+    } catch (error) {
+      console.error("Error deleting board", error);
+    }
+  };
+
   return (
     <div className="app-container">
       <header className="header">
@@ -32,10 +70,14 @@ function App() {
           <button onClick={handleCreateBoardClick}>Create a New Board</button>
         </div>
         <div className="kudos-boards">
-        <KudosBoard />
+          <KudosBoard boards={boards} onDeleteBoard={handleDeleteBoard} />
         </div>
       </div>
-      <div>{showModal && <Modal onClose={handleCloseModal} />}</div>
+      <div>
+        {showModal && (
+          <Modal onClose={handleCloseModal} onSumbit={handleCreateBoard} />
+        )}
+      </div>
     </div>
   );
 }

@@ -2,17 +2,17 @@ import React, { useState, useEffect } from "react";
 import KudosCard from "./KudosCard";
 import "./KudosBoard.css";
 
-function KudosBoard() {
+function KudosBoard({ boards, onDeleteBoard }) {
   return (
     <div>
       <div className="kudos-cards">
-        <KudosCard />
-        <KudosCard />
-        <KudosCard />
-        <KudosCard />
-        <KudosCard />
-        <KudosCard />
-        <KudosCard />
+        {boards.map((board) => (
+          <KudosCard
+            key={board.boardId}
+            board={board}
+            onDelete={onDeleteBoard}
+          />
+        ))}
       </div>
     </div>
   );
