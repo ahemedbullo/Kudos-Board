@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import KudosCard from "./KudosCard";
 import "./KudosBoard.css";
 
 function KudosBoard({ boards, onDeleteBoard }) {
+  const navigate = useNavigate();
+
+  const handleViewBoard = (boardId) => {
+    navigate(`/boards/${boardId}`);
+  };
   return (
     <div>
       <div className="kudos-cards">
@@ -11,6 +17,7 @@ function KudosBoard({ boards, onDeleteBoard }) {
             key={board.boardId}
             board={board}
             onDelete={onDeleteBoard}
+            onViewBoard={() => handleViewBoard(board.boardId)}
           />
         ))}
       </div>

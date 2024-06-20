@@ -19,7 +19,7 @@ function Card() {
         console.error("Error getting board in Card ", error);
       }
     };
-    fetchBoard();
+    if (boardId) fetchBoard();
   }, [boardId]);
 
   const handleCreateCardClick = () => {
@@ -52,12 +52,12 @@ function Card() {
       console.error("Error creating card", error);
     }
   };
-  if (!board) return <div>Loading...</div>;
+
   return (
     <div>
       <h2>{board.title}</h2>
       <img src={board.image} alt="" />
-      <p>{board.category}</p>
+      {/* <p>{board.category}</p> */}
       <p>Author: {board.author}</p>
       <button onClick={handleCreateCardClick}>Add New Card</button>
       {showModal && (

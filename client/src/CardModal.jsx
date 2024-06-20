@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Modal.css";
+import "./CardModal.css";
 
 function CardModal({ onClose, onSumbit }) {
   const [title, setTitle] = useState("");
@@ -8,7 +8,7 @@ function CardModal({ onClose, onSumbit }) {
   const [author, setAuthor] = useState("");
 
   const handleSumbit = () => {
-    if (!title || !category || !author) {
+    if (!title || !message || !author) {
       alert("All fields required");
       return;
     }

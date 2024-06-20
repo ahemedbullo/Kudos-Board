@@ -2,13 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./KudosCard.css";
 
-function KudosCard({ board, onDelete }) {
-  const navigate = useNavigate();
-
-  const handleViewBoard = () => {
-    navigate(`/boards/${board.boardId}`);
-  };
-
+function KudosCard({ board, onViewBoard, onDelete }) {
   return (
     <div className="kudos-card">
       <img src={board.image} alt="" className="" />
@@ -17,7 +11,7 @@ function KudosCard({ board, onDelete }) {
         <p>{board.author}</p>
         <p>{board.category}</p>
         <div className="cardButtons">
-          <button className="viewBoard" onClick={handleViewBoard}>
+          <button className="viewBoard" onClick={onViewBoard}>
             View Board
           </button>
           <button
