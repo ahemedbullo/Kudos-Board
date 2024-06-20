@@ -61,10 +61,7 @@ function Card() {
       <p>Author: {board.author}</p>
       <button onClick={handleCreateCardClick}>Add New Card</button>
       {showModal && (
-        <CardModal
-          onClose={handleCloseModal}
-          onSumbit={handleCreateCardClick}
-        />
+        <CardModal onClose={handleCloseModal} onSumbit={handleCreateCard} />
       )}
       {cards.length > 0 && (
         <div>

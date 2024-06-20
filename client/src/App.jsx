@@ -84,7 +84,7 @@ function App() {
                 </div>
               }
             />
-            <Route path="/boards/:boardID" element={<Card />} />
+            <Route path="/boards/:boardId" element={<Card />} />
           </Routes>
         </div>
         <div>

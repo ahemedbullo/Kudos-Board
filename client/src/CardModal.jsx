@@ -28,6 +28,7 @@ function CardModal({ onClose, onSumbit }) {
         <h2>Create a New Card</h2>
         <label>Title:</label>
         <input
+          className="cardModal"
           type="text"
           placeholder="Title"
           value={title}
@@ -37,8 +38,9 @@ function CardModal({ onClose, onSumbit }) {
 
         <label>Message:</label>
         <input
+          className="cardModal"
           type="text"
-          placeholder="Title"
+          placeholder="Message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           required
@@ -46,6 +48,7 @@ function CardModal({ onClose, onSumbit }) {
 
         <label>Author:</label>
         <input
+          className="cardModal"
           type="text"
           placeholder="Title"
           value={author}
