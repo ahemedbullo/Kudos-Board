@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import CardModal from "./CardModal";
+import "./Card.css";
 
 function Card() {
   const { boardId } = useParams();
@@ -92,16 +93,19 @@ function Card() {
     }
   };
 
-  const handleUpvoteCard = async (cardId) => {
+  const handleUpvoteCard = async (card) => {
     try {
-      const response = await fetch(`http://localhost:3000/cards/${cardId}/upvote`, {
-        method: "PUT",
-      });
+      const response = await fetch(
+        `http://localhost:3000/boards/${card.boardId}/cards/${card.cardId}/upvote`,
+        {
+          method: "PUT",
+        }
+      );
       if (!response.ok) {
         throw new Error("UpvoteCard Error");
       }
       const updatedCard = await response.json();
-      setCards(cards.map((card) => (card.id === cardId ? updatedCard : card)));
+      setCards(cards.map((c) => (c.id === card.cardId ? updatedCard : c)));
     } catch (error) {
       console.error("Error upvoting card: ", error);
     }
@@ -125,7 +129,9 @@ function Card() {
               <p>{card.message}</p>
               <img src={card.gif} alt="Selected GIF" />
               <p>Author: {card.author}</p>
-              <button onClick={() => handleUpvoteCard(card.carId)}>Upvote ({card.voteCount || 0})</button>
+              <button onClick={() => handleUpvoteCard(card)}>
+                Upvote {card.voteCount}
+              </button>
               <button onClick={() => handleDeleteCard(card)}>Delete</button>
             </div>
           ))}
