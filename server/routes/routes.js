@@ -35,20 +35,45 @@ app.get('/search', async (req, res) => {
     const { query } = req.query;
     console.log(`Query: ${query}`);
     try {
-    const boards = await prisma.board.findMany({
-    where: {
-        OR: [
+      const boards = await prisma.board.findMany({
+        where: {
+          OR: [
             { title: { contains: query, mode: 'insensitive'} },
-            { category: { contains: query } },
             { author: { contains: query } },
-        ],
+          ],
         },
         include: { cards: true },
-    });
-    console.log(`Found boards: ${boards}`);
+      });
+      console.log(`Found boards: ${boards}`);
       res.status(200).json(boards);
     } catch (error) {
       res.status(500).json({ error: "Error searching boards" });
+    }
+  });
+  
+  app.get('/category/:category', async (req, res) => {
+    const { category } = req.params;
+    try {
+      if (category === 'All') {
+        const boards = await prisma.board.findMany({
+          include: { cards: true },
+        });
+        res.status(200).json(boards);
+      } else if (category === 'Recent') {
+        const boards = await prisma.board.findMany({
+          include: { cards: true },
+        });
+        const sortedBoards = boards.sort((a, b) => b.boardId - a.boardId);
+        res.status(200).json(sortedBoards);
+      } else {
+        const boards = await prisma.board.findMany({
+          where: { category },
+          include: { cards: true },
+        });
+        res.status(200).json(boards);
+      }
+    } catch (error) {
+      res.status(500).json({ error: "Error getting boards by category" });
     }
   });
 

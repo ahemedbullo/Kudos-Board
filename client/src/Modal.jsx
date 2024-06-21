@@ -42,9 +42,8 @@ function Modal({ onClose, onSubmit }) {
           required
         >
           <option value="">Select a category</option>
-          <option value="All">All</option>
           <option value="Recent">Recent</option>
-          <option value="Celebration">Celebration</option>
+          <option value="Celebrations">Celebration</option>
           <option value="Thank You">Thank You</option>
           <option value="Inspiration">Inspiration</option>
         </select>

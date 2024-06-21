@@ -11,6 +11,7 @@ function CardModal({ onClose, onSubmit }) {
 
   const fetchGifs = async (query) => {
     const apiKey = "EC9mGnNebbhExK0iaYV8XQq8a2o0Qudr";
+    console.log(apiKey);
     const url = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${gifQuery}&limit=10`;
     try {
       const response = await fetch(url);
