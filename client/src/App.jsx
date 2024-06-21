@@ -182,6 +182,10 @@ function App() {
           </Routes>
         </div>
       </Router>
+      <footer>
+        {" "}
+        <b>© Created by Ahemed Summer 2024</b>{" "}
+      </footer>
     </div>
   );
 }

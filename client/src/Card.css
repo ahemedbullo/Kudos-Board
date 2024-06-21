@@ -1,0 +1,45 @@
+.card-elems{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.card{
+    background-color: #2c2c2c;
+    color: #f5f5f5;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px; 
+    margin: 10px; 
+    width: 300px; 
+    height: 400px;
+    box-sizing: border-box;
+}
+
+.Kudos-card-img{ 
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    object-fit: cover;
+}
+.gif-container{
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.card-gif{
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    object-fit: cover;
+}
+div.card-btn{
+    display:flex;
+    gap: 60px;
+    padding-top: 5px;
+    justify-content: center;
+}

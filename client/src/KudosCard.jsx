@@ -5,15 +5,25 @@ import "./KudosCard.css";
 function KudosCard({ board, image, onViewBoard, onDelete }) {
   return (
     <div className="kudos-card">
-      <img
-        src={`https://picsum.photos/200/300?random=${image}`}
-        alt=""
-        className="Kudos-card-img"
-      />
+      <div className="card-image-container">
+        <img
+          src={`https://picsum.photos/200/300?random=${image}`}
+          alt=""
+          className="Kudos-card-img"
+        />
+      </div>
       <div>
-        <p>{board.title}</p>
-        <p>{board.author}</p>
-        <p>{board.category}</p>
+        <div className="card-details">
+          <p>
+            <b>Title: </b> {board.title}
+          </p>
+          <p>
+            <b>Author: </b> {board.author}
+          </p>
+          <p>
+            <b>Category: </b> {board.category}
+          </p>
+        </div>
         <div className="cardButtons">
           <button className="viewBoard" onClick={onViewBoard}>
             View Board

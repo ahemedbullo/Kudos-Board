@@ -31,27 +31,28 @@ function Card() {
     setShowModal(false);
   };
 
+  const fetchCards = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/boards/${boardId}/cards`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(),
+        }
+      );
+      const data = await response.json();
+      setCards(data);
+    } catch (error) {
+      console.error("Error fetching boards: ", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchCards = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/boards/${boardId}/cards`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(),
-          }
-        );
-        const data = await response.json();
-        setCards(data);
-      } catch (error) {
-        console.error("Error fetching boards: ", error);
-      }
-    };
     fetchCards();
-  }, [boardId, cards]);
+  }, [boardId]);
 
   const handleCreateCard = async (cardData) => {
     try {
@@ -84,9 +85,11 @@ function Card() {
           method: "DELETE",
         }
       );
+      fetchCards();
       if (!response.ok) {
         throw new Error("Error deleting card");
       }
+
       setCards(cards.filter((c) => c.id != card.cardId));
     } catch (error) {
       console.error("Error deleting cards: ", error);
@@ -105,34 +108,48 @@ function Card() {
         throw new Error("UpvoteCard Error");
       }
       const updatedCard = await response.json();
+      // setCards(prevState => [...prevState, ...])
+      fetchCards();
       setCards(cards.map((c) => (c.id === card.cardId ? updatedCard : c)));
     } catch (error) {
       console.error("Error upvoting card: ", error);
     }
   };
 
+  console.log("ORDER CHANGING?", cards);
+
   return (
     <div>
-      <h2>{board.title}</h2>
-      <img src={board.image} alt="" />
-      {/* <p>{board.category}</p> */}
-      <p>Author: {board.author}</p>
-      <button onClick={handleCreateCardClick}>Add New Card</button>
+      <h2>
+        {" "}
+        <b>Title: </b>
+        {board.title}
+      </h2>
+      <button onClick={handleCreateCardClick} className="add-btn">
+        Add New Card
+      </button>
       {showModal && (
         <CardModal onClose={handleCloseModal} onSubmit={handleCreateCard} />
       )}
       {cards.length > 0 && (
-        <div>
+        <div className="card-elems">
           {cards.map((card) => (
-            <div key={card.cardId}>
+            <div key={card.cardId} className="card">
               <h3>{card.cardTitle}</h3>
-              <p>{card.message}</p>
-              <img src={card.gif} alt="Selected GIF" />
+              <div className="gif-container">
+                <img src={card.gif} alt="Selected GIF" className="card-gif" />
+              </div>
+              <p>
+                <b>Message: </b>
+                {card.message}
+              </p>
               <p>Author: {card.author}</p>
-              <button onClick={() => handleUpvoteCard(card)}>
-                Upvote {card.voteCount}
-              </button>
-              <button onClick={() => handleDeleteCard(card)}>Delete</button>
+              <div className="card-btn">
+                <button onClick={() => handleUpvoteCard(card)}>
+                  Upvote: {card.voteCount}
+                </button>
+                <button onClick={() => handleDeleteCard(card)}>Delete</button>
+              </div>
             </div>
           ))}
         </div>
