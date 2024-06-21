@@ -29,6 +29,6 @@ model Card {
   author    String?
   voteCount Int? @default(0)
   board     Board @relation(fields:[boardId], references: [boardId])
+   comment   String?
   boardId   Int
-
 }

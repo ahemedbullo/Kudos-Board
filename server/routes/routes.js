@@ -208,4 +208,17 @@ app.put("/:boardId/cards/:cardId/upvote", async (req, res) => {
   }
 });
 
+app.put("/:boardId/cards/:cardId/comment", async (req, res) => {
+  const { cardId } = req.params;
+  const { comment } = req.body; // Get the comment from the request body
+  try {
+    const updatedCard = await prisma.card.update({
+      where: { cardId: parseInt(cardId) },
+      data: { comment }, // Update the comment field
+    });
+    res.status(200).json(updatedCard);
+  } catch (error) {
+    res.status(500).json({ error: "Error updating comment" });
+  }
+});
 module.exports = app;

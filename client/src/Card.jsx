@@ -34,19 +34,12 @@ function Card() {
   const fetchCards = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/boards/${boardId}/cards`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(),
-        }
+        `http://localhost:3000/boards/${boardId}/cards`
       );
       const data = await response.json();
       setCards(data);
     } catch (error) {
-      console.error("Error fetching boards: ", error);
+      console.error("Error fetching cards: ", error);
     }
   };
 
@@ -67,7 +60,7 @@ function Card() {
         }
       );
       if (!response.ok) {
-        throw new Error("Error getting cardData");
+        throw new Error("Error creating card");
       }
       const newCard = await response.json();
       setCards([...cards, newCard]);
@@ -85,14 +78,12 @@ function Card() {
           method: "DELETE",
         }
       );
-      fetchCards();
       if (!response.ok) {
         throw new Error("Error deleting card");
       }
-
-      setCards(cards.filter((c) => c.id != card.cardId));
+      fetchCards();
     } catch (error) {
-      console.error("Error deleting cards: ", error);
+      console.error("Error deleting card: ", error);
     }
   };
 
@@ -108,20 +99,15 @@ function Card() {
         throw new Error("UpvoteCard Error");
       }
       const updatedCard = await response.json();
-      // setCards(prevState => [...prevState, ...])
       fetchCards();
-      setCards(cards.map((c) => (c.id === card.cardId ? updatedCard : c)));
     } catch (error) {
       console.error("Error upvoting card: ", error);
     }
   };
 
-  console.log("ORDER CHANGING?", cards);
-
   return (
     <div>
       <h2>
-        {" "}
         <b>Title: </b>
         {board.title}
       </h2>
@@ -134,26 +120,86 @@ function Card() {
       {cards.length > 0 && (
         <div className="card-elems">
           {cards.map((card) => (
-            <div key={card.cardId} className="card">
-              <h3>{card.cardTitle}</h3>
-              <div className="gif-container">
-                <img src={card.gif} alt="Selected GIF" className="card-gif" />
-              </div>
-              <p>
-                <b>Message: </b>
-                {card.message}
-              </p>
-              <p>Author: {card.author}</p>
-              <div className="card-btn">
-                <button onClick={() => handleUpvoteCard(card)}>
-                  Upvote: {card.voteCount}
-                </button>
-                <button onClick={() => handleDeleteCard(card)}>Delete</button>
-              </div>
-            </div>
+            <CardItem
+              key={card.cardId}
+              card={card}
+              fetchCards={fetchCards}
+              handleDeleteCard={handleDeleteCard}
+              handleUpvoteCard={handleUpvoteCard}
+            />
           ))}
         </div>
       )}
+    </div>
+  );
+}
+
+function CardItem({ card, fetchCards, handleDeleteCard, handleUpvoteCard }) {
+  const [comment, setComment] = useState("");
+
+  const handleCommentChange = (event) => {
+    setComment(event.target.value);
+  };
+
+  const handleCommentCard = async (commentText) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/boards/${card.boardId}/cards/${card.cardId}/comment`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ comment: commentText }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to update comment on card");
+      }
+      const updatedCard = await response.json();
+      fetchCards();
+      setComment("");
+    } catch (error) {
+      console.error("Error updating comment on card: ", error);
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (comment.trim()) {
+      await handleCommentCard(comment);
+    }
+  };
+
+  return (
+    <div className="card">
+      <h3>{card.cardTitle}</h3>
+      <div className="gif-container">
+        <img src={card.gif} alt="Selected GIF" className="card-gif" />
+      </div>
+      <p>
+        <b>Message: </b>
+        {card.message}
+      </p>
+      <p>Author: {card.author}</p>
+      <p>
+        <b>Comment: </b> {card.comment}
+      </p>
+      <form className="comment-form" onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Write a comment..."
+          onChange={handleCommentChange}
+          value={comment}
+        />
+        <button type="submit">Post Comment</button>
+      </form>
+      <div className="card-btn">
+        <button onClick={() => handleUpvoteCard(card)}>
+          Upvote: {card.voteCount}
+        </button>
+        <button onClick={() => handleDeleteCard(card)}>Delete</button>
+      </div>
     </div>
   );
 }
