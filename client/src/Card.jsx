@@ -50,7 +50,7 @@ function Card() {
       }
     };
     fetchCards();
-  }, []);
+  }, [boardId, cards]);
 
   const handleCreateCard = async (cardData) => {
     try {
@@ -75,6 +75,23 @@ function Card() {
     }
   };
 
+  const handleDeleteCard = async (card) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/boards/${card.boardId}/cards/${card.cardId}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Error deleting card");
+      }
+      setCards(cards.filter((c) => c.id != card.cardId));
+    } catch (error) {
+      console.error("Error deleting cards: ", error);
+    }
+  };
+
   return (
     <div>
       <h2>{board.title}</h2>
@@ -93,6 +110,7 @@ function Card() {
               <p>{card.message}</p>
               <img src={card.gif} alt="Selected GIF" />
               <p>Author: {card.author}</p>
+              <button onClick={() => handleDeleteCard(card)}>Delete</button>
             </div>
           ))}
         </div>

@@ -197,4 +197,17 @@ app.delete('/:boardId/cards/:cardId', async (req, res) => {
     }
 });
 
+app.put('/:boardId/cards/:cardId/upvote', async (req, res) =>{
+    const {cardId} = req.params;
+    try{
+        const updatedCard = await prisma.card.update({
+            where: {cardId: parseInt(cardId)},
+            data:{voteCount: {increment : 1}},
+        });
+        res.json(updatedCard)
+    } catch (error){
+        res.status(500).json({error: 'Error updating upvote'})
+    }
+} )
+
 module.exports = app;
