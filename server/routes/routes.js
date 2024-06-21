@@ -17,6 +17,8 @@ app.post('/', async(req, res) => {
     }
 })
 
+
+
 app.get('/', async(req, res) => {
     try{
     const boards = await prisma.board.findMany({
@@ -27,6 +29,28 @@ app.get('/', async(req, res) => {
     res.status(500).json({error: "Error getting boards"})
 }
 });
+app.get('/search', async (req, res) => {
+    // http://localhost:3000/boards/search?query=basketball
+    console.log('Searching boards...');
+    const { query } = req.query;
+    console.log(`Query: ${query}`);
+    try {
+    const boards = await prisma.board.findMany({
+    where: {
+        OR: [
+            { title: { contains: query, mode: 'insensitive'} },
+            { category: { contains: query } },
+            { author: { contains: query } },
+        ],
+        },
+        include: { cards: true },
+    });
+    console.log(`Found boards: ${boards}`);
+      res.status(200).json(boards);
+    } catch (error) {
+      res.status(500).json({ error: "Error searching boards" });
+    }
+  });
 
 app.get('/:id', async(req, res) => {
     const { id } = req.params;
@@ -44,6 +68,7 @@ app.get('/:id', async(req, res) => {
         res.status(500).json({error: "Error getting board"})
     }
 })
+
 
 app.put('/:id', async(req, res) => {
     const {cardId} = req.params;

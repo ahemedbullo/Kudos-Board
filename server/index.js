@@ -15,6 +15,10 @@ app.use(cors());
 app.use(express.json());
 app.use("/boards", boards);
 
+app.get('/', (req, res)=>{
+    res.send('Welcome to the app')
+
+})
 
 
 

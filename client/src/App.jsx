@@ -10,6 +10,9 @@ function App() {
   const [showModal, setShowModal] = useState(false);
   const [boards, setBoards] = useState([]);
 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
+
   const handleCreateBoardClick = () => {
     setShowModal(true);
   };
@@ -75,6 +78,24 @@ function App() {
       console.error("Error deleting board", error);
     }
   };
+  const handleSetSearchTerm = (curr) => {
+    setSearchTerm(curr);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/boards/search?query=${searchTerm}`
+        );
+        const data = await response.json();
+        setSearchResult(data);
+      } catch (error) {
+        console.error("Error fetching search results:", error);
+      }
+    };
+    fetchData();
+  }, [searchTerm]);
 
   return (
     <Router>
@@ -83,7 +104,7 @@ function App() {
           <h1>Kudos Board</h1>
         </header>
         <div className="content">
-          <SearchBar />
+          <SearchBar handleSetSearchTerm={handleSetSearchTerm} />
           <div className="category-buttons">
             <button>All</button>
             <button>Recent</button>
@@ -99,10 +120,17 @@ function App() {
               path="/"
               element={
                 <div className="kudos-boards">
-                  <KudosBoard
-                    boards={boards}
-                    onDeleteBoard={handleDeleteBoard}
-                  />
+                  {searchTerm ? (
+                    <KudosBoard
+                      boards={searchResult}
+                      onDeleteBoard={handleDeleteBoard}
+                    />
+                  ) : (
+                    <KudosBoard
+                      boards={boards}
+                      onDeleteBoard={handleDeleteBoard}
+                    />
+                  )}
                 </div>
               }
             />

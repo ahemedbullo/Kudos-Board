@@ -17,7 +17,7 @@ model Board {
   title    String
   image    String
   category String
-  author   String
+  author   String?
   cards    Card[]
 }
 
@@ -26,7 +26,8 @@ model Card {
   cardTitle String
   message   String
   gif       String
-  author    String
+  author    String?
+  voteCount Int?
   board     Board @relation(fields:[boardId], references: [boardId])
   boardId   Int
 

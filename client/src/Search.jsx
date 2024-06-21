@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-function SearchBar() {
+function SearchBar({ handleSetSearchTerm }) {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    handleSetSearchTerm(searchQuery);
   };
   const handleSearchQuery = (event) => {
     setSearchQuery(event.target.value);

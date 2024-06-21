@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Modal.css";
 
-function Modal({ onClose, onSumbit }) {
+function Modal({ onClose, onSubmit }) {
   const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
   const [category, setCategory] = useState("");
@@ -12,7 +12,7 @@ function Modal({ onClose, onSumbit }) {
       alert("All fields required");
       return;
     }
-    onSumbit({ title, image, category, author });
+    onSubmit({ title, image, category, author });
   };
 
   const handleModalClick = (event) => {
