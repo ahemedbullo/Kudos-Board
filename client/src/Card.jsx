@@ -92,6 +92,21 @@ function Card() {
     }
   };
 
+  const handleUpvoteCard = async (cardId) => {
+    try {
+      const response = await fetch(`http://localhost:3000/cards/${cardId}/upvote`, {
+        method: "PUT",
+      });
+      if (!response.ok) {
+        throw new Error("UpvoteCard Error");
+      }
+      const updatedCard = await response.json();
+      setCards(cards.map((card) => (card.id === cardId ? updatedCard : card)));
+    } catch (error) {
+      console.error("Error upvoting card: ", error);
+    }
+  };
+
   return (
     <div>
       <h2>{board.title}</h2>
@@ -110,6 +125,7 @@ function Card() {
               <p>{card.message}</p>
               <img src={card.gif} alt="Selected GIF" />
               <p>Author: {card.author}</p>
+              <button onClick={() => handleUpvoteCard(card.carId)}>Upvote ({card.voteCount || 0})</button>
               <button onClick={() => handleDeleteCard(card)}>Delete</button>
             </div>
           ))}
