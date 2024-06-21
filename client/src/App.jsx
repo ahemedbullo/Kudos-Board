@@ -74,6 +74,7 @@ function App() {
       }
 
       setBoards(boards.filter((board) => board.boardId != boardId));
+      setSearchResult(searchResult.filter((board) => board.boardId != boardId));
     } catch (error) {
       console.error("Error deleting board", error);
     }
