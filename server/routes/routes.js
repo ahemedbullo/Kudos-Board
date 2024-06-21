@@ -28,7 +28,7 @@ app.get("/", async (req, res) => {
   }
 });
 app.get("/search", async (req, res) => {
-  // http://localhost:3000/boards/search?query=basketball
+  // ${import.meta.env.VITE_BACKEND_URL}/boards/search?query=basketball
   console.log("Searching boards...");
   const { query } = req.query;
   console.log(`Query: ${query}`);

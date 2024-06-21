@@ -25,7 +25,9 @@ function App() {
   useEffect(() => {
     const fetchBoards = async () => {
       try {
-        const response = await fetch("http://localhost:3000/boards");
+        const response = await fetch(
+          import.meta.env.VITE_BACKEND_URL + "/boards"
+        );
         const data = await response.json();
         setBoards(data);
       } catch (error) {
@@ -37,13 +39,16 @@ function App() {
 
   const handleCreateBoard = async (boardData) => {
     try {
-      const response = await fetch("http://localhost:3000/boards", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(boardData),
-      });
+      const response = await fetch(
+        import.meta.env.VITE_BACKEND_URL + "/boards",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(boardData),
+        }
+      );
       if (!response.ok) {
         throw new Error("HandleCreateBoard Error");
       }
@@ -57,9 +62,12 @@ function App() {
 
   const handleDeleteBoard = async (boardId) => {
     try {
-      const response = await fetch(`http://localhost:3000/boards/${boardId}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/boards/${boardId}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (!response.ok) {
         console.log(
           `Error deleting board: ${response.status} ${response.statusText}`
@@ -82,7 +90,9 @@ function App() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/boards/search?query=${searchTerm}`
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/boards/search?query=${searchTerm}`
         );
         const data = await response.json();
         setSearchResult(data);
@@ -100,7 +110,7 @@ function App() {
       setCategory(newCategory);
       try {
         const response = await fetch(
-          `http://localhost:3000/boards/category/${newCategory}`,
+          `${import.meta.env.VITE_BACKEND_URL}/boards/category/${newCategory}`,
           {
             headers: { Accept: "application/json" },
           }

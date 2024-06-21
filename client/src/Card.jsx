@@ -12,7 +12,9 @@ function Card() {
   useEffect(() => {
     const fetchBoard = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/boards/${boardId}`);
+        const response = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/boards/${boardId}`
+        );
         const data = await response.json();
         setBoard(data);
         setCards(data.cards);
@@ -34,7 +36,7 @@ function Card() {
   const fetchCards = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/boards/${boardId}/cards`
+        `${import.meta.env.VITE_BACKEND_URL}/boards/${boardId}/cards`
       );
       const data = await response.json();
       setCards(data);
@@ -50,7 +52,7 @@ function Card() {
   const handleCreateCard = async (cardData) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/boards/${boardId}/cards`,
+        `${import.meta.env.VITE_BACKEND_URL}/boards/${boardId}/cards`,
         {
           method: "POST",
           headers: {
@@ -73,7 +75,9 @@ function Card() {
   const handleDeleteCard = async (card) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/boards/${card.boardId}/cards/${card.cardId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/boards/${card.boardId}/cards/${
+          card.cardId
+        }`,
         {
           method: "DELETE",
         }
@@ -90,7 +94,9 @@ function Card() {
   const handleUpvoteCard = async (card) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/boards/${card.boardId}/cards/${card.cardId}/upvote`,
+        `${import.meta.env.VITE_BACKEND_URL}/boards/${card.boardId}/cards/${
+          card.cardId
+        }/upvote`,
         {
           method: "PUT",
         }
@@ -144,7 +150,9 @@ function CardItem({ card, fetchCards, handleDeleteCard, handleUpvoteCard }) {
   const handleCommentCard = async (commentText) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/boards/${card.boardId}/cards/${card.cardId}/comment`,
+        `${import.meta.env.VITE_BACKEND_URL}/boards/${card.boardId}/cards/${
+          card.cardId
+        }/comment`,
         {
           method: "PUT",
           headers: {
